@@ -1,0 +1,6 @@
+type Query {
+    getProductSKUById(product_id: Int): ProductSku @resolver(class: "ScandiPWA\\DirectAddProductViaLinkGraphQl\\Model\\Resolver\\GetProductSkuById")
+}
+type ProductSku {
+    ProductSku: String
+}
