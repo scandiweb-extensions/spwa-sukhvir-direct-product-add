@@ -8,7 +8,7 @@
         "@scandipwa/eslint-config": "0.1.31",
         "@tilework/mosaic": "0.1.4",
         "@tilework/mosaic-craco": "0.0.5",
-        "template-extension": "file:packages/template-extension"
+        "spwa-sukhvir-direct-product-add": "file:packages/spwa-sukhvir-direct-product-add"
     },
     "scandipwa": {
         "type": "theme",
@@ -17,7 +17,7 @@
         },
         "parentTheme": "@scandipwa/scandipwa",
         "extensions": {
-            "template-extension": true
+            "spwa-sukhvir-direct-product-add": true
         }
     },
     "scripts": {
