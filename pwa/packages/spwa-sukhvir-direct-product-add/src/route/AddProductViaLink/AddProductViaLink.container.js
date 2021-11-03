@@ -55,17 +55,25 @@ export class AddProductViaLinkContainer extends PureComponent {
             match
         } = this.props;
         const [productsQuantities, productsIds] = this.getProductDetailsFromUrl(match.params.id);
+        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         if (productsIds === undefined) {
             return false;
         }
-
+        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         productsIds.forEach(async (productId, index) => {
-            const productSku = await fetchQuery(getProductByIdQuery(productId));
+            const productSku = await fetchQuery(getProductByIdQuery(productId))
+                .catch(
+                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/fetchQuery/catch */
+                    () => {
+                        history.push('/');
+                        showErrorNotification(
+                            __(`Couldn't find a product with this ID: ${productId}`)
+                        );
+                    }
+                );
 
-            if (!productSku.getProductSKUById.ProductSku) {
-                history.push('/');
-                const errorMessage = "Couldn't find a product with ID: ";
-                showErrorNotification(errorMessage + productId);
+            if (!productSku) {
+                return;
             }
 
             const product = {
@@ -77,10 +85,10 @@ export class AddProductViaLinkContainer extends PureComponent {
                 /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/addProductToCart/catch */
                     () => {
                         history.push('/');
-                        const errorMessage = `Product with ID ${ productId
-                        } : Either the quantity you requested is not available, or this product couldn't be found!`;
-
-                        showErrorNotification(errorMessage);
+                        showErrorNotification(
+                            __(`Product with ID ${ productId } :
+                            Either the quantity you requested is not available, or this product couldn't be found!`)
+                        );
                     }
                 );
         });
@@ -115,10 +123,9 @@ export class AddProductViaLinkContainer extends PureComponent {
                 /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/addProductToCart/catch */
                     () => {
                         history.push('/');
-                        const errorMessage = `Product ${ productSku
-                        } : Either the quantity you requested is not available, or this product couldn't be found!`;
-
-                        showErrorNotification(errorMessage);
+                        showErrorNotification(
+                            __(`Product with SKU: ${ productSku } couldn't be found!`)
+                        );
                     }
                 );
         });
