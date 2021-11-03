@@ -1,7 +1,6 @@
 /* eslint-disable @scandipwa/scandipwa-guidelines/jsx-no-props-destruction */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable fp/no-let */
 
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
@@ -55,11 +54,9 @@ export class AddProductViaLinkContainer extends PureComponent {
             match
         } = this.props;
         const [productsQuantities, productsIds] = this.getProductDetailsFromUrl(match.params.id);
-        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         if (productsIds === undefined) {
             return false;
         }
-        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         productsIds.forEach(async (productId, index) => {
             const productSku = await fetchQuery(getProductByIdQuery(productId))
                 .catch(
@@ -147,37 +144,42 @@ export class AddProductViaLinkContainer extends PureComponent {
     */
 
     getProductDetailsFromUrl(urlParams) {
-        let productsQuantities = [];
-        let productsIds = [];
+        const productsSplitted = {
+            productsQuantities: [],
+            productsSpecifier: []
+        };
 
         const { identifier } = this.props;
         const products = urlParams.split(',');
         const isSuccess = products.every((product) => {
-            let holder = [];
-
-            if ((product.match(/-/g) || []).length > 1 && (identifier === 'sku' || identifier === 'sku-coupon')) {
+            const holder = [];
+            if ((product.match(/-/g) || []).length > 1
+                && (identifier === 'sku' || identifier === 'sku-coupon')) {
                 const quantity = product
                     .substr(product.lastIndexOf('-') + 1, product.length - product.lastIndexOf('-'));
 
-                const productSku = product.substr(0, product.lastIndexOf('-'));
-                holder = [productSku, quantity];
+                const productsSpecifier = product.substr(0, product.lastIndexOf('-'));
+                holder[0] = productsSpecifier;
+                holder[1] = quantity;
             } else {
-                holder = product.split('-');
+                const splitted = product.split('-');
+                holder[0] = splitted[0];
+                holder[1] = splitted[1];
             }
             // eslint-disable-next-line no-restricted-globals
             if (isNaN(holder[1]) && holder[1] !== undefined) {
-                productsQuantities = 0;
-                productsIds = 0;
+                productsSplitted.productsQuantities = 0;
+                productsSplitted.productsSpecifier = 0;
                 products.length = 0;
                 return false;
             }
-            productsIds.push(holder[0]);
-            productsQuantities.push(holder[1] || '1');
+            productsSplitted.productsSpecifier.push(holder[0]);
+            productsSplitted.productsQuantities.push(holder[1] || '1');
 
             return true;
         });
 
-        return isSuccess ? [productsQuantities, productsIds] : [];
+        return isSuccess ? [productsSplitted.productsQuantities, productsSplitted.productsSpecifier] : [];
     }
 
     render() {
