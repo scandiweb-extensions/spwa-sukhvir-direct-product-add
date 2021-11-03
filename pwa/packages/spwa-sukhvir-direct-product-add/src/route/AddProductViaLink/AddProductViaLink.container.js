@@ -55,11 +55,9 @@ export class AddProductViaLinkContainer extends PureComponent {
             match
         } = this.props;
         const [productsQuantities, productsIds] = this.getProductDetailsFromUrl(match.params.id);
-        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         if (productsIds === undefined) {
             return false;
         }
-        console.log('!!!productsQuantities, productsIds: ', productsQuantities, productsIds);
         productsIds.forEach(async (productId, index) => {
             const productSku = await fetchQuery(getProductByIdQuery(productId))
                 .catch(
