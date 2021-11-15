@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @category    Scandiweb
- * @package     ScandiPWA_DirectAddProductViaLinkGraphQl
- * @author      Jort Geurts <jort.geurts@scandiweb.com | info@scandiweb.com>
+ * @category    ScandiWeb
+ * @author      ScandiWeb Team <info@scandiweb.com>
+ * @package     ScandiWeb_DirectAddProductViaLinkGraphQl
  * @copyright   Copyright (c) 2021 Scandiweb, Ltd (https://scandiweb.com)
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="ScandiPWA_DirectAddProductViaLinkGraphQl" setup_version="0.0.1" />
+    <module name="Scandiweb_DirectAddProductViaLinkGraphQl" setup_version="0.0.1" />
 </config>

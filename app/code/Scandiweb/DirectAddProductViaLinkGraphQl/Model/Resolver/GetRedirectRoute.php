@@ -1,16 +1,12 @@
 <?php
 /**
- * ScandiPWA - Progressive Web App for Magento
- *
- * Copyright © Scandiweb, Inc. All rights reserved.
- * See LICENSE for license details.
- *
- * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
- * @package scandipwa/base-theme
- * @link https://github.com/scandipwa/base-theme
+ * @category    ScandiWeb
+ * @author      ScandiWeb Team <info@scandiweb.com>
+ * @package     ScandiWeb_DirectAddProductViaLinkGraphQl
+ * @copyright   Copyright (c) 2021 Scandiweb, Ltd (https://scandiweb.com)
  */
 
-namespace ScandiPWA\DirectAddProductViaLinkGraphQl\Model\Resolver;
+namespace Scandiweb\DirectAddProductViaLinkGraphQl\Model\Resolver;
 
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
