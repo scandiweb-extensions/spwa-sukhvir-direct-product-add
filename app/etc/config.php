@@ -365,6 +365,7 @@ return [
         'ScandiPWA_WishlistGraphQl' => 1,
         'ScandiPWA_SampleData' => 1,
         'ScandiPWA_SliderGraphQl' => 1,
+        'Sukhvir_DirectProductAdd' => 1,
         'Temando_ShippingRemover' => 1,
         'Vertex_Tax' => 1,
         'Vertex_AddressValidationApi' => 1,

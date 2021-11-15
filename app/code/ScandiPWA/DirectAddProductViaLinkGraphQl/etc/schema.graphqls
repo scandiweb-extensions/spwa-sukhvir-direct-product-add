@@ -1,6 +1,15 @@
 type Query {
-    getProductSKUById(product_id: Int): ProductSku @resolver(class: "ScandiPWA\\DirectAddProductViaLinkGraphQl\\Model\\Resolver\\GetProductSkuById")
+    getProductSKUById(product_id: Int): ProductSku @resolver(class: "ScandiPWA\\DirectAddProductViaLinkGraphQl\\Model\\Resolver\\GetProductSkuById"),
+    getRedirectRoute: RedirectPath @resolver(class: "ScandiPWA\\DirectAddProductViaLinkGraphQl\\Model\\Resolver\\GetRedirectRoute")
 }
 type ProductSku {
     ProductSku: String
 }
+type RedirectPath {
+    redirect_to: String
+}
+
+type StoreConfig {
+    sukhvirdirectproductadd_general_redirects: String
+}
+

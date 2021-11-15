@@ -5,11 +5,14 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { showNotification } from 'Store/Notification/Notification.action';
 import { fetchQuery } from 'Util/Request';
+import { appendWithStoreCode } from 'Util/Url';
 
 import { getProductByIdQuery } from '../../query/GetProductById.query';
+import { redirectionPathQuery } from '../../query/GetRedirectionPath.query';
 import { AddProductViaLinkComponent } from './AddProductViaLink.component';
 
 export const CartDispatcher = import(
@@ -31,7 +34,7 @@ export const mapDispatchToProps = (dispatch) => ({
 /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/mapStateToProps */
 export const mapStateToProps = (_dispatch) => ({});
 
-/** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/AddProductViaLinkContainer */
+/** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container */
 export class AddProductViaLinkContainer extends PureComponent {
     static propTypes = {
         identifier: PropTypes.string.isRequired,
@@ -43,8 +46,26 @@ export class AddProductViaLinkContainer extends PureComponent {
     };
 
     state = {
-        isLoading: true
+        isLoading: true,
+        redirect: false
     };
+
+    // gets the url path and then redirects to it.
+    async getRedirectionPath(history) {
+        const redirectionPath = await fetchQuery(redirectionPathQuery);
+        const redirect_to = () => {
+            if (redirectionPath.getRedirectRoute.redirect_to === 'checkout/cart/') {
+                return 'cart';
+            }
+
+            return 'checkout/cart';
+        };
+
+        history.push({
+            pathname: appendWithStoreCode(`/${redirect_to()}`)
+        });
+        // return this.setState({ redirect: `/${redirectionPath.getRedirectRoute.redirect_to}` });
+    }
 
     addProductToCartById() {
         const {
@@ -60,7 +81,7 @@ export class AddProductViaLinkContainer extends PureComponent {
         productsIds.forEach(async (productId, index) => {
             const productSku = await fetchQuery(getProductByIdQuery(productId))
                 .catch(
-                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/fetchQuery/catch */
+                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/AddProductViaLinkContainer/addProductToCartById/productsIds/forEach/productSku/fetchQuery/catch */
                     () => {
                         history.push('/');
                         showErrorNotification(
@@ -79,7 +100,7 @@ export class AddProductViaLinkContainer extends PureComponent {
 
             await addProductToCart({ product, quantity: productsQuantities[index] })
                 .catch(
-                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/addProductToCart/catch */
+                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/AddProductViaLinkContainer/addProductToCartById/productsIds/forEach/addProductToCart/catch */
                     () => {
                         history.push('/');
                         showErrorNotification(
@@ -105,26 +126,27 @@ export class AddProductViaLinkContainer extends PureComponent {
             history,
             match
         } = this.props;
+
         const [productsQuantities, productsSkus] = this.getProductDetailsFromUrl(match.params.sku);
         if (productsSkus === undefined) {
             return false;
         }
 
         productsSkus.forEach(async (productSku, index) => {
-            const productNew = {
+            const product = {
                 sku: productSku
             };
 
-            await addProductToCart({ product: productNew, quantity: productsQuantities[index] })
-                .catch(
-                /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/addProductToCart/catch */
-                    () => {
-                        history.push('/');
-                        showErrorNotification(
-                            __(`Product with SKU: ${ productSku } couldn't be found!`)
-                        );
-                    }
-                );
+            await addProductToCart({ product, quantity: Number(productsQuantities[index]) });
+            // .catch(
+            // /** @namespace SpwaSukhvirDirectProductAdd/Route/AddProductViaLink/Container/AddProductViaLinkContainer/addProductToCartBySku/productsSkus/forEach/addProductToCart/catch */
+            //     () => {
+            //         history.push('/');
+            //         showErrorNotification(
+            //             __(`Product with SKU: ${ productSku } couldn't be found!`)
+            //         );
+            //     }
+            // );
         });
 
         return true;
@@ -190,6 +212,8 @@ export class AddProductViaLinkContainer extends PureComponent {
             match
         } = this.props;
 
+        const { redirect } = this.state;
+        console.log('!!!identifier: ', identifier);
         const areProductsAdded = (identifier === 'sku' || identifier === 'sku-coupon') ? this.addProductToCartBySku()
             : (identifier === 'id') ? this.addProductToCartById()
                 : undefined;
@@ -197,16 +221,19 @@ export class AddProductViaLinkContainer extends PureComponent {
         if (!areProductsAdded) {
             history.push('/');
             showErrorNotification('Invalid URL request parameters, try that again!');
-            this.setState({ isLoading: false });
         } else {
-            history.push('/cart');
+            this.getRedirectionPath(history);
+
             if (identifier === 'sku-coupon') {
                 this.handleApplyCouponToCart(match.params.coupon);
             }
         }
 
         return (
-            <AddProductViaLinkComponent { ...this.state } />
+            <>
+                <AddProductViaLinkComponent { ...this.state } />
+                { redirect ? <Redirect to={ redirect } /> : '' }
+            </>
         );
     }
 }
