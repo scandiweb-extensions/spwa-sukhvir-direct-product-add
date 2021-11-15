@@ -1,0 +1,18 @@
+{
+    "name": "ScandiPWA/DirectAddProductViaLinkGraphQl",
+    "description": "ScandiPWA 5.0.5 support for getting products via ID, required for Direct Add product spwa extension",
+    "type": "magento2-module",
+    "license": [
+      "OSL-3.0"
+    ],
+      "authors": [
+          {
+              "name": "Scandiweb",
+              "email": "info@scandiweb.com"
+          }
+    ],
+    "require": {
+      "sukhvir/directproductadd": "^1.0.6"
+    },
+    "version": "0.0.1"
+  }

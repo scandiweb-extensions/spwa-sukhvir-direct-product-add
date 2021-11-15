@@ -1,5 +1,5 @@
 /*
-!/pwa
+!/scandipwa
 !/app
 /app/etc/env.php
 /app/etc/NonComposerComponentRegistration.php
@@ -17,10 +17,7 @@
 !.gitignore
 !**/.gitkeep
 !README.md
-!.github
 
 .idea
 .DS_Store
 .vscode
-!*.code-workspace
-!.env
