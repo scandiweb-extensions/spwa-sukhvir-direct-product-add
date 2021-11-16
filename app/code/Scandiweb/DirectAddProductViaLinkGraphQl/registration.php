@@ -10,4 +10,4 @@ declare(strict_types=1);
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'ScandiWeb_DirectAddProductViaLinkGraphQl', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Scandiweb_DirectAddProductViaLinkGraphQl', __DIR__);
