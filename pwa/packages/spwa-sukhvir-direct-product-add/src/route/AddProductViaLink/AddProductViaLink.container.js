@@ -46,8 +46,7 @@ export class AddProductViaLinkContainer extends PureComponent {
     };
 
     state = {
-        isLoading: true,
-        redirect: false
+        isLoading: true
     };
 
     // gets the url path and then redirects to it.
@@ -65,7 +64,6 @@ export class AddProductViaLinkContainer extends PureComponent {
         history.push({
             pathname: appendWithStoreCode(`/${redirect_to()}`)
         });
-        // return this.setState({ redirect: `/${redirectionPath.getRedirectRoute.redirect_to}` });
     }
 
     addProductToCartById() {
@@ -212,8 +210,6 @@ export class AddProductViaLinkContainer extends PureComponent {
             showErrorNotification,
             match
         } = this.props;
-
-        const { redirect } = this.state;
         const areProductsAdded = (identifier === 'sku' || identifier === 'sku-coupon') ? this.addProductToCartBySku()
             : (identifier === 'id') ? this.addProductToCartById()
                 : undefined;
@@ -230,10 +226,7 @@ export class AddProductViaLinkContainer extends PureComponent {
         }
 
         return (
-            <>
-                <AddProductViaLinkComponent { ...this.state } />
-                { redirect ? <Redirect to={ redirect } /> : '' }
-            </>
+            <AddProductViaLinkComponent { ...this.state } />
         );
     }
 }
