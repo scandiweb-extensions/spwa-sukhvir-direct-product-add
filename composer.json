@@ -15,8 +15,11 @@
         "magento/composer-dependency-version-audit-plugin": "~0.1",
         "magento/composer-root-update-plugin": "~1.1",
         "magento/product-community-edition": "2.4.3",
-        "scandipwa/pwa": "^0.0.1",
-        "scandipwa/sample-data": "^1.1"
+        "readymage/logger": "^1.0",
+        "readymage/maintenance": "^1.0",
+        "scandipwa/sample-data": "^1.1",
+        "scandipwa/theme": "^0.0.1",
+        "sukhvir/directproductadd": "1.0.6"
     },
     "autoload": {
         "exclude-from-classmap": [
@@ -73,7 +76,7 @@
     "repositories": {
         "scandipwa": {
             "type": "path",
-            "url": "./pwa"
+            "url": "scandipwa"
         },
         "0": {
             "type": "composer",
